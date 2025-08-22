@@ -34,9 +34,7 @@ app.use(cookieParser());
 
 // Configure Cross-Origin Resource Sharing (CORS).
 const corsOptions = {
-  // Allow requests only from our frontend's origin.
-  origin: "http://localhost:5173",
-  // Allow cookies to be sent with requests.
+  origin: process.env.CORS_ORIGIN, // Read from environment variable
   credentials: true,
 };
 app.use(cors(corsOptions));
