@@ -34,7 +34,7 @@ app.use(cookieParser());
 
 // Configure Cross-Origin Resource Sharing (CORS).
 const corsOptions = {
-  origin: process.env.CORS_ORIGIN, // Read from environment variable
+  origin: process.env.CORS_ORIGIN, 
   credentials: true,
 };
 app.use(cors(corsOptions));
