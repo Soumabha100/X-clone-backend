@@ -65,9 +65,16 @@ export const Register = async (req, res) => {
     });
 
     // Send the token as a cookie and return the user data, just like in the Login function
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day from now
+    };
+
     return res
       .status(201)
-      .cookie("token", token, { expiresIn: "1d", httpOnly: true })
+      .cookie("token", token, cookieOptions)
       .json({
         message: `Welcome, ${newUser.name}!`,
         user: newUser,
@@ -122,9 +129,16 @@ export const Login = async (req, res) => {
     });
 
     // Send the token back as an httpOnly cookie for security.
+    const cookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: "None",
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000), // 1 day from now
+    };
+
     return res
       .status(201)
-      .cookie("token", token, { expiresIn: "1d", httpOnly: true })
+      .cookie("token", token, cookieOptions)
       .json({
         message: `Welcome back ${user.name}`,
         user,
@@ -139,10 +153,18 @@ export const Login = async (req, res) => {
  * Logs out the user by clearing their authentication cookie.
  */
 export const logout = (req, res) => {
-  return res.cookie("token", "", { expiresIn: new Date(Date.now()) }).json({
-    message: "user logged out successfully.",
-    success: true,
-  });
+  const cookieOptions = {
+    httpOnly: true,
+    secure: true,
+    sameSite: "None",
+  };
+
+  return res
+    .cookie("token", "", { ...cookieOptions, expiresIn: new Date(Date.now()) })
+    .json({
+      message: "user logged out successfully.",
+      success: true,
+    });
 };
 
 /**
@@ -359,11 +381,9 @@ export const deleteUser = async (req, res) => {
     // Security Check: Ensure the logged-in user is deleting their own account.
     // In a real app, you might also allow an admin to do this.
     if (loggedInUserId.toString() !== userIdToDelete) {
-      return res
-        .status(403)
-        .json({
-          message: "Unauthorized. You can only delete your own account.",
-        });
+      return res.status(403).json({
+        message: "Unauthorized. You can only delete your own account.",
+      });
     }
 
     const userToDelete = await User.findById(userIdToDelete);
