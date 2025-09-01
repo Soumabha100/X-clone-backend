@@ -47,7 +47,7 @@ export const Register = async (req, res) => {
       });
     }
 
-    const hashedPassword = await bcryptjs.hash(password, 16);
+    const hashedPassword = await bcryptjs.hash(password, 12);
 
     // Create the new user and get the created document back
     const newUser = await User.create({

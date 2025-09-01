@@ -39,6 +39,12 @@ const corsOptions = {
 };
 app.use(cors(corsOptions));
 
+// --- Health Check / Ping Route ---
+// This simple endpoint is used to keep the server alive on free hosting services.
+app.get("/api/v1/ping", (req, res) => {
+  res.status(200).json({ message: "Server is awake!" });
+});
+
 // --- API Routes ---
 // Mount the routers on their specific base paths.
 
