@@ -35,6 +35,9 @@ router.route("/login").post(Login);
 // GET /api/v1/user/logout
 router.route("/logout").get(logout);
 
+router.route("/forgot-password").post(forgotPassword);
+router.route("/reset-password/:token").post(resetPassword);
+
 // --- Protected Routes (Authentication required) ---
 // The 'isAuthenticated' middleware will run before each of these controller functions.
 
